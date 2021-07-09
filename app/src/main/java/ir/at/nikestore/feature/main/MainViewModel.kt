@@ -10,6 +10,8 @@ import io.reactivex.disposables.Disposable
 import ir.at.nikestore.NikeViewModel
 import ir.at.nikestore.common.NikeSingleObserver
 import ir.at.nikestore.data.Product
+import ir.at.nikestore.data.SORT_LATEST
+import ir.at.nikestore.data.SORT_POPULAR
 import ir.at.nikestore.data.repo.BannerRepository
 import ir.at.nikestore.data.repo.ProductRepository
 import timber.log.Timber
@@ -17,18 +19,30 @@ import timber.log.Timber
 class MainViewModel(productRepository: ProductRepository , bannerRepository: BannerRepository) : NikeViewModel() {
 
     val productsLiveData = MutableLiveData<List<Product>>()
+    val productsPopularLiveData = MutableLiveData<List<Product>>()
     val bannerLiveData = MutableLiveData<List<Banner>>()
 
 
     init {
         progressBarLiveData.value = true
-        productRepository.getProducts()
+        productRepository.getProducts(SORT_LATEST)
             .subscribeOn(io.reactivex.schedulers.Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { progressBarLiveData.value = false }
             .subscribe(object : NikeSingleObserver<List<Product>>(compositeDisposable){
                 override fun onSuccess(t: List<Product>) {
                     productsLiveData.value = t
+                }
+
+            })
+
+        productRepository.getProducts(SORT_POPULAR)
+            .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doFinally { progressBarLiveData.value = false }
+            .subscribe(object : NikeSingleObserver<List<Product>>(compositeDisposable){
+                override fun onSuccess(t: List<Product>) {
+                    productsPopularLiveData.value = t
                 }
 
             })

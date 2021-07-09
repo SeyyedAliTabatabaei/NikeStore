@@ -6,7 +6,7 @@ import ir.at.nikestore.data.Product
 
 interface ProductRepository {
 
-    fun getProducts() : Single<List<Product>>
+    fun getProducts(sort:Int) : Single<List<Product>>
 
     fun getFavoriteProduct() : Single<List<Product>>
 

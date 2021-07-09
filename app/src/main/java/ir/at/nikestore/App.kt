@@ -12,6 +12,7 @@ import ir.at.nikestore.data.repo.source.BannerRemoteDataSource
 import ir.at.nikestore.data.repo.source.ProductLocalDataSource
 import ir.at.nikestore.data.repo.source.ProductRemoteDataSource
 import ir.at.nikestore.feature.main.MainViewModel
+import ir.at.nikestore.feature.main.ProductListAdapter
 import ir.at.nikestore.sevices.FrescoLoadingService
 import ir.at.nikestore.sevices.http.ApiService
 import ir.at.nikestore.sevices.http.ImageLoadingService
@@ -28,12 +29,13 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Timber.plant()
+        Timber.plant(Timber.DebugTree())
 
         Fresco.initialize(this)
 
         val myModules = module {
             single { creatApiServiceInstance() }
+            factory { ProductListAdapter(get()) }
             single<ImageLoadingService> { FrescoLoadingService() }
             factory<ProductRepository> { ProductRepositoryImpl(ProductRemoteDataSource(get()) , ProductLocalDataSource()) }
             factory<BannerRepository> { BannerRepositoryImpl(BannerRemoteDataSource(get())) }

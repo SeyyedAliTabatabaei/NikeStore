@@ -22,9 +22,9 @@ class BannerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val imageView = inflater.inflate(R.layout.fragment_banner , container , false) as NikeImageView
-        val banner =  requireArguments().getParcelable<Banner>(EXTRA_KEY_DATA)?: throw IllegalStateException ("null image")
-        imageLoadingService.load(imageView , banner.image)
+        val imageView = inflater.inflate(R.layout.fragment_banner, container, false) as NikeImageView
+        val banner = requireArguments().getParcelable<Banner>(EXTRA_KEY_DATA) ?: throw IllegalStateException("Banner cannot be null")
+        imageLoadingService.load(imageView, banner.image)
         return imageView
     }
 
