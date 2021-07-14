@@ -3,6 +3,7 @@ package ir.at.nikestore.feature.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.work.impl.Schedulers
+import com.sevenlearn.nikestore.common.asyncNetworkRequest
 import com.sevenlearn.nikestore.data.Banner
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,8 +27,7 @@ class MainViewModel(productRepository: ProductRepository , bannerRepository: Ban
     init {
         progressBarLiveData.value = true
         productRepository.getProducts(SORT_LATEST)
-            .subscribeOn(io.reactivex.schedulers.Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .asyncNetworkRequest()
             .doFinally { progressBarLiveData.value = false }
             .subscribe(object : NikeSingleObserver<List<Product>>(compositeDisposable){
                 override fun onSuccess(t: List<Product>) {
@@ -37,8 +37,7 @@ class MainViewModel(productRepository: ProductRepository , bannerRepository: Ban
             })
 
         productRepository.getProducts(SORT_POPULAR)
-            .subscribeOn(io.reactivex.schedulers.Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .asyncNetworkRequest()
             .doFinally { progressBarLiveData.value = false }
             .subscribe(object : NikeSingleObserver<List<Product>>(compositeDisposable){
                 override fun onSuccess(t: List<Product>) {

@@ -1,18 +1,16 @@
 package ir.at.nikestore
 
 import android.app.Application
+import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.sevenlearn.nikestore.data.Banner
-import ir.at.nikestore.data.repo.BannerRepository
-import ir.at.nikestore.data.repo.BannerRepositoryImpl
-import ir.at.nikestore.data.repo.ProductRepository
-import ir.at.nikestore.data.repo.ProductRepositoryImpl
-import ir.at.nikestore.data.repo.source.BannerRemoteDataSource
-import ir.at.nikestore.data.repo.source.ProductLocalDataSource
-import ir.at.nikestore.data.repo.source.ProductRemoteDataSource
+import com.sevenlearn.nikestore.feature.product.comment.CommentListViewModel
+import ir.at.nikestore.data.repo.*
+import ir.at.nikestore.data.repo.source.*
 import ir.at.nikestore.feature.main.MainViewModel
 import ir.at.nikestore.feature.main.ProductListAdapter
+import ir.at.nikestore.feature.product.ProductDetailViewModel
 import ir.at.nikestore.sevices.FrescoLoadingService
 import ir.at.nikestore.sevices.http.ApiService
 import ir.at.nikestore.sevices.http.ImageLoadingService
@@ -39,7 +37,11 @@ class App: Application() {
             single<ImageLoadingService> { FrescoLoadingService() }
             factory<ProductRepository> { ProductRepositoryImpl(ProductRemoteDataSource(get()) , ProductLocalDataSource()) }
             factory<BannerRepository> { BannerRepositoryImpl(BannerRemoteDataSource(get())) }
+            factory<CommentRepository> { CommentRepositoryImpl(CommentRemoteDataSource(get())) }
+
             viewModel{MainViewModel(get() , get())}
+            viewModel { (bundle: Bundle) -> ProductDetailViewModel(bundle , get()) }
+            viewModel { (productID : Int) -> CommentListViewModel(productID , get()) }
         }
 
         startKoin {

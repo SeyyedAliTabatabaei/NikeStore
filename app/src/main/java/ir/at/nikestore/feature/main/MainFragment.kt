@@ -1,5 +1,6 @@
 package ir.at.nikestore.feature.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sevenlearn.nikestore.common.convertDpToPixel
 import ir.at.nikestore.NikeFragment
 import ir.at.nikestore.R
+import ir.at.nikestore.common.EXTRA_KEY_DATA
 import ir.at.nikestore.data.Product
+import ir.at.nikestore.feature.product.ProductDetailActivity
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainFragment : NikeFragment() {
+class MainFragment : NikeFragment() , ProductListAdapter.ProductOnClickListener {
 
     val mainViewModel : MainViewModel by viewModel()
     val producteListAdapter : ProductListAdapter by inject()
@@ -33,9 +36,11 @@ class MainFragment : NikeFragment() {
 
         latestProductsRv.layoutManager = LinearLayoutManager(requireContext() , RecyclerView.HORIZONTAL , false)
         latestProductsRv.adapter = producteListAdapter
+        producteListAdapter.productOnClickListener = this
 
         popurlarProductsRv.layoutManager = LinearLayoutManager(requireContext() , RecyclerView.HORIZONTAL , false)
         popurlarProductsRv.adapter = productePopularListAdapter
+        productePopularListAdapter.productOnClickListener = this
 
         mainViewModel.productsLiveData.observe(viewLifecycleOwner){
             producteListAdapter.products = it as ArrayList<Product>
@@ -60,5 +65,11 @@ class MainFragment : NikeFragment() {
 
             sliderIndicator.setViewPager2(bannerSliderViewPager)
         }
+    }
+
+    override fun onProductClick(product: Product) {
+        startActivity(Intent(requireContext() , ProductDetailActivity::class.java).apply {
+            putExtra(EXTRA_KEY_DATA , product)
+        })
     }
 }

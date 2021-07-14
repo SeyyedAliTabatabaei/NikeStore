@@ -1,6 +1,7 @@
 package ir.at.nikestore.sevices.http
 
 import com.sevenlearn.nikestore.data.Banner
+import com.sevenlearn.nikestore.data.Comment
 import io.reactivex.Single
 import ir.at.nikestore.data.Product
 import retrofit2.Retrofit
@@ -16,6 +17,9 @@ interface ApiService {
 
     @GET("banner/slider")
     fun getBanner() : Single<List<Banner>>
+
+    @GET("comment/list")
+    fun getComments(@Query("product_id") productId : Int ) : Single<List<Comment>>
 }
 
 fun creatApiServiceInstance() : ApiService{

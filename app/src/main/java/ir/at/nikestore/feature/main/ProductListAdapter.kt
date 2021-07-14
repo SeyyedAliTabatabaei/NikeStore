@@ -21,6 +21,8 @@ class ProductListAdapter(val imageLoadingService: ImageLoadingService): Recycler
         notifyDataSetChanged()
     }
 
+    var productOnClickListener : ProductOnClickListener?=null
+
     inner class viewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val titleTv : TextView = itemView.findViewById(R.id.productTitleTv)
@@ -36,7 +38,7 @@ class ProductListAdapter(val imageLoadingService: ImageLoadingService): Recycler
             previousPriceTv.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
 
             itemView.implementSpringAnimationTrait()
-            itemView.setOnClickListener {  }
+            itemView.setOnClickListener { productOnClickListener?.onProductClick(product) }
         }
     }
 
@@ -47,4 +49,8 @@ class ProductListAdapter(val imageLoadingService: ImageLoadingService): Recycler
     override fun onBindViewHolder(holder: viewHolder, position: Int) = holder.bindProduct(products[position])
 
     override fun getItemCount(): Int = products.size
+
+    interface ProductOnClickListener{
+        fun onProductClick(product: Product)
+    }
 }
