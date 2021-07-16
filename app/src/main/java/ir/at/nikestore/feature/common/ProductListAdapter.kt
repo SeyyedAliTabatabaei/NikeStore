@@ -1,4 +1,4 @@
-package ir.at.nikestore.feature.main
+package ir.at.nikestore.feature.common
 
 import android.graphics.Paint
 import android.view.LayoutInflater
@@ -12,8 +12,11 @@ import ir.at.nikestore.R
 import ir.at.nikestore.data.Product
 import ir.at.nikestore.sevices.http.ImageLoadingService
 import ir.at.nikestore.view.NikeImageView
+const val VIEW_TYPE_ROUND = 0
+const val VIEW_TYPE_SMALL = 1
+const val VIEW_TYPE_LARGE = 2
 
-class ProductListAdapter(val imageLoadingService: ImageLoadingService): RecyclerView.Adapter<ProductListAdapter.viewHolder>() {
+class ProductListAdapter(var viewType : Int = VIEW_TYPE_ROUND, val imageLoadingService: ImageLoadingService): RecyclerView.Adapter<ProductListAdapter.viewHolder>() {
 
     var products = ArrayList<Product>()
     set(value) {
@@ -42,8 +45,18 @@ class ProductListAdapter(val imageLoadingService: ImageLoadingService): Recycler
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return viewType
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
-        return viewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_product , parent , false))
+        val layoutResId = when(viewType){
+            VIEW_TYPE_ROUND -> R.layout.item_product
+            VIEW_TYPE_SMALL -> R.layout.item_product_small
+            VIEW_TYPE_LARGE -> R.layout.item_product_large
+            else -> throw IllegalStateException("error")
+        }
+        return viewHolder(LayoutInflater.from(parent.context).inflate(layoutResId , parent , false))
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) = holder.bindProduct(products[position])

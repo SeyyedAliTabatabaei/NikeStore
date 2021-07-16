@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="ir.at.nikestore.feature.main.MainFragment"
+        android:name="ir.at.nikestore.feature.home.HomeFragment"
         android:label="MainFragment" />
 </navigation>
