@@ -15,6 +15,9 @@
     <string name="sortPopular">پربازدیدترین</string>
     <string name="sortPriceHighToLow">گران ترین</string>
     <string name="sortPriceLowToHigh">ارزان ترین</string>
+    <string name="addToCart">افزودن به سبد خرید</string>
+    <string name="unknowError">خطای نامشخص</string>
+    <string name="successAddToCart">به سبد خرید اضافه شد</string>
 
     <string-array name="sort">
         <item>@string/sortLatest</item>
@@ -22,5 +25,14 @@
         <item>@string/sortPriceHighToLow</item>
         <item>@string/sortPriceLowToHigh</item>
     </string-array>
+
+    <string name="loginScreenTitle">ورود به حساب کاربری</string>
+    <string name="loginTitle">ورود</string>
+    <string name="email">ایمیل</string>
+    <string name="password">رمز عبور</string>
+    <string name="signUpHint">حساب کاربری ندارید؟</string>
+    <string name="signUp">ثبت نام</string>
+    <string name="loginHint">ایمیل و رمزعبور خود را وارد کنید</string>
+
 
 </resources>

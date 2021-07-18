@@ -36,9 +36,10 @@ class App: Application() {
             factory<ProductRepository> { ProductRepositoryImpl(ProductRemoteDataSource(get()) , ProductLocalDataSource()) }
             factory<BannerRepository> { BannerRepositoryImpl(BannerRemoteDataSource(get())) }
             factory<CommentRepository> { CommentRepositoryImpl(CommentRemoteDataSource(get())) }
+            factory<CartRepository> { CartRepositoryImpl(CartRemoteDataSource(get())) }
 
             viewModel{ HomeViewModel(get() , get()) }
-            viewModel { (bundle: Bundle) -> ProductDetailViewModel(bundle , get()) }
+            viewModel { (bundle: Bundle) -> ProductDetailViewModel(bundle , get() , get()) }
             viewModel { (productID : Int) -> CommentListViewModel(productID , get()) }
             viewModel { (sort : Int ) -> ProductListViewModel(sort , get()) }
 

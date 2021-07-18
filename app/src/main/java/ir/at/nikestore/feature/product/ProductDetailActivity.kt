@@ -3,15 +3,22 @@ package ir.at.nikestore.feature.product
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.compose.ui.graphics.Paint
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.sevenlearn.nikestore.common.formatPrice
 import com.sevenlearn.nikestore.data.Comment
 import com.sevenlearn.nikestore.feature.product.CommentAdapter
+import io.reactivex.Completable
+import io.reactivex.CompletableObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import ir.at.nikestore.NikeActivity
 import ir.at.nikestore.R
 import ir.at.nikestore.common.EXTRA_KEY_ID
+import ir.at.nikestore.common.NikeCompletableObserver
 import ir.at.nikestore.feature.product.comment.CommentListActivity
 import ir.at.nikestore.sevices.http.ImageLoadingService
 import ir.at.nikestore.view.scroll.ObservableScrollViewCallbacks
@@ -22,15 +29,16 @@ import org.koin.core.parameter.parametersOf
 
 class ProductDetailActivity : NikeActivity() {
 
-    val productDetailViewModel : ProductDetailViewModel by inject{ parametersOf(intent.extras)}
+    val viewModel : ProductDetailViewModel by inject{ parametersOf(intent.extras)}
     val imageLoadingService : ImageLoadingService by inject()
     val commentAdapter = CommentAdapter()
+    val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_detail)
 
-        productDetailViewModel.productLiveData.observe(this){
+        viewModel.productLiveData.observe(this){
             imageLoadingService.load(productIv , it.image)
             titleTv.text = it.title
             previousPriceTv.text = formatPrice(it.previous_price)
@@ -39,18 +47,18 @@ class ProductDetailActivity : NikeActivity() {
             toolbarTitleTv.text = it.title
         }
 
-        productDetailViewModel.progressBarLiveData.observe(this){
+        viewModel.progressBarLiveData.observe(this){
             setProgressIndicator(it)
         }
 
-        productDetailViewModel.commentLiveData.observe(this){
+        viewModel.commentLiveData.observe(this){
             commentAdapter.comments = it as ArrayList<Comment>
             if(it.size > 3){
                 viewAllCommentsBtn.visibility = View.VISIBLE
 
                 viewAllCommentsBtn.setOnClickListener {
                     startActivity(Intent(this , CommentListActivity::class.java).apply {
-                        putExtra(EXTRA_KEY_ID , productDetailViewModel.productLiveData.value!!.id)
+                        putExtra(EXTRA_KEY_ID , viewModel.productLiveData.value!!.id)
                     })
                 }
             }
@@ -86,5 +94,21 @@ class ProductDetailActivity : NikeActivity() {
 
             })
         }
+
+        addToCartBtn.setOnClickListener {
+            viewModel.onAddToCart()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object  : NikeCompletableObserver(compositeDisposable){
+                    override fun onComplete() {
+                        showSnackBar(getString(R.string.successAddToCart))
+                    }
+                })
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
     }
 }

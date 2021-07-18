@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NikeStore"
         android:usesCleartextTraffic="true">
-        <activity android:name=".feature.list.ProductListActivity"></activity>
+        <activity android:name=".feature.auth.AuthActivity" android:theme="@style/Theme.Nike.AuthTheme"/>
+        <activity android:name=".feature.list.ProductListActivity" />
         <activity android:name=".feature.product.comment.CommentListActivity" />
         <activity android:name=".feature.product.ProductDetailActivity" />
         <activity android:name=".feature.main.MainActivity">
