@@ -5,18 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import io.reactivex.CompletableObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import ir.at.nikestore.R
 import ir.at.nikestore.common.NikeCompletableObserver
-import kotlinx.android.synthetic.main.fragment_login.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlinx.android.synthetic.main.fragment_sign_up.*
+import org.koin.android.ext.android.inject
 
-class LoginFragment : Fragment() {
+class SignUpFragment : Fragment() {
 
-    val viewModel : AuthViewModel by viewModel()
+    val viewModel : AuthViewModel by inject()
     val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -24,14 +23,14 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_login , container , false)
+        return inflater.inflate(R.layout.fragment_sign_up , container , false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loginBtn.setOnClickListener {
-            viewModel.login(emailEt.text.toString() , passwordEt.text.toString())
+        signUpBtn.setOnClickListener {
+            viewModel.signUp(emailEt.text.toString() , passwordEt.text.toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : NikeCompletableObserver(compositeDisposable){
@@ -41,13 +40,11 @@ class LoginFragment : Fragment() {
                 })
         }
 
-
-        signUpLinkBtn.setOnClickListener {
+        loginLinkBtn.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragmentContainer , SignUpFragment())
+                replace(R.id.fragmentContainer , LoginFragment())
             }.commit()
         }
-
     }
 
     override fun onStop() {
