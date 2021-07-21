@@ -6,9 +6,7 @@ import com.sevenlearn.nikestore.data.Comment
 import com.sevenlearn.nikestore.data.TokenContainer
 import com.sevenlearn.nikestore.data.TokenResponse
 import io.reactivex.Single
-import ir.at.nikestore.data.AddToCartResponse
-import ir.at.nikestore.data.MessageResponse
-import ir.at.nikestore.data.Product
+import ir.at.nikestore.data.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -32,6 +30,18 @@ interface ApiService {
 
     @POST("cart/add")
     fun addToCart(@Body jsonObject: JsonObject):Single<AddToCartResponse>
+    
+    @POST("cart/remove")
+    fun removeItemFromCart(@Body jsonObject: JsonObject) : Single<MessageResponse>
+
+    @GET("cart/list")
+    fun getCart() : Single<CartResponse>
+
+    @POST("cart/changeCount")
+    fun changeCount(@Body jsonObject: JsonObject) : Single<AddToCartResponse>
+
+    @GET("cart/count")
+    fun getCartItemCount() : Single<CartItemCount>
 
     @POST("auth/token")
     fun login(@Body jsonObject: JsonObject) : Single<TokenResponse>

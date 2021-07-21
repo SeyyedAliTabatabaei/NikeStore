@@ -8,6 +8,7 @@ import com.sevenlearn.nikestore.feature.product.comment.CommentListViewModel
 import ir.at.nikestore.data.repo.*
 import ir.at.nikestore.data.repo.source.*
 import ir.at.nikestore.feature.auth.AuthViewModel
+import ir.at.nikestore.feature.cart.CartViewModel
 import ir.at.nikestore.feature.common.ProductListAdapter
 import ir.at.nikestore.feature.list.ProductListViewModel
 import ir.at.nikestore.feature.home.HomeViewModel
@@ -51,6 +52,8 @@ class App: Application() {
             viewModel { (productID : Int) -> CommentListViewModel(productID , get()) }
             viewModel { (sort : Int ) -> ProductListViewModel(sort , get()) }
             viewModel { AuthViewModel(get()) }
+            viewModel { CartViewModel(get()) }
+
 
         }
 

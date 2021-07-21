@@ -4,6 +4,7 @@ import ir.at.nikestore.data.Product
 
 data class CartItem(
     val cart_item_id: Int,
-    val count: Int,
-    val product: Product
+    var count: Int,
+    val product: Product ,
+    var changeCountProgressBarIsVisible : Boolean = false
 )
