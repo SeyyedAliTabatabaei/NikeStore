@@ -12,11 +12,11 @@ class ProductRemoteDataSource(val apiService: ApiService) : ProductDateSource {
         TODO("Not yet implemented")
     }
 
-    override fun addToFavorite(): Completable {
+    override fun addToFavorite(product: Product): Completable {
         TODO("Not yet implemented")
     }
 
-    override fun deleteFromFavorite(): Completable {
+    override fun deleteFromFavorite(product: Product): Completable {
         TODO("Not yet implemented")
     }
 }

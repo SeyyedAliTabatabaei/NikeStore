@@ -4,6 +4,7 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sevenlearn.nikestore.common.formatPrice
@@ -24,7 +25,7 @@ class ProductListAdapter(var viewType : Int = VIEW_TYPE_ROUND, val imageLoadingS
         notifyDataSetChanged()
     }
 
-    var productOnClickListener : ProductOnClickListener?=null
+    var productOnClickListener : ProductEventListener?=null
 
     inner class viewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -32,6 +33,7 @@ class ProductListAdapter(var viewType : Int = VIEW_TYPE_ROUND, val imageLoadingS
         val productIv : NikeImageView = itemView.findViewById(R.id.productIv)
         val currentPriceTv : TextView = itemView.findViewById(R.id.currentPriceTv)
         val previousPriceTv : TextView = itemView.findViewById(R.id.previousPriceTv)
+        val favoriteBtn : ImageView = itemView.findViewById(R.id.favoriteBtn)
 
         fun bindProduct(product: Product){
             imageLoadingService.load(productIv , product.image)
@@ -42,6 +44,19 @@ class ProductListAdapter(var viewType : Int = VIEW_TYPE_ROUND, val imageLoadingS
 
             itemView.implementSpringAnimationTrait()
             itemView.setOnClickListener { productOnClickListener?.onProductClick(product) }
+
+            if (product.isFavorite)
+                favoriteBtn.setImageResource(R.drawable.ic_favorite_fill)
+            else
+                favoriteBtn.setImageResource(R.drawable.ic_favorites)
+
+
+
+            favoriteBtn.setOnClickListener {
+                productOnClickListener?.onFavoriteBtnClick(product)
+                product.isFavorite = !product.isFavorite
+                notifyItemChanged(adapterPosition)
+            }
         }
     }
 
@@ -63,7 +78,8 @@ class ProductListAdapter(var viewType : Int = VIEW_TYPE_ROUND, val imageLoadingS
 
     override fun getItemCount(): Int = products.size
 
-    interface ProductOnClickListener{
+    interface ProductEventListener{
         fun onProductClick(product: Product)
+        fun onFavoriteBtnClick(product: Product)
     }
 }

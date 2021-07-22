@@ -23,7 +23,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class HomeFragment : NikeFragment() , ProductListAdapter.ProductOnClickListener {
+class HomeFragment : NikeFragment() , ProductListAdapter.ProductEventListener {
 
     val homeViewModel : HomeViewModel by viewModel()
     val producteListAdapter : ProductListAdapter by inject{ parametersOf(VIEW_TYPE_ROUND) }
@@ -83,5 +83,9 @@ class HomeFragment : NikeFragment() , ProductListAdapter.ProductOnClickListener 
         startActivity(Intent(requireContext() , ProductDetailActivity::class.java).apply {
             putExtra(EXTRA_KEY_DATA , product)
         })
+    }
+
+    override fun onFavoriteBtnClick(product: Product) {
+        homeViewModel.addProductToFavorites(product)
     }
 }

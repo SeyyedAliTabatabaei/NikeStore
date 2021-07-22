@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.sevenlearn.nikestore.common.asyncNetworkRequest
 import ir.at.nikestore.NikeViewModel
 import ir.at.nikestore.R
+import ir.at.nikestore.common.NikeCompletableObserver
 import ir.at.nikestore.common.NikeSingleObserver
 import ir.at.nikestore.data.Product
 import ir.at.nikestore.data.repo.ProductRepository
@@ -35,6 +36,26 @@ class ProductListViewModel(var sort : Int, val productRepository: ProductReposit
         this.sort = sort
         selectedSortTitleLiveData.value = sortTitles[sort]
         getProduct()
+    }
+
+    fun addProductToFavorites(product: Product){
+        if (product.isFavorite)
+            productRepository.deleteFromFavorite(product)
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                .subscribe(object  : NikeCompletableObserver(compositeDisposable){
+                    override fun onComplete() {
+                        product.isFavorite = false
+                    }
+                })
+        else
+            productRepository.addToFavorite(product)
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                .subscribe(object  : NikeCompletableObserver(compositeDisposable){
+                    override fun onComplete() {
+                        product.isFavorite = true
+                    }
+                })
+
     }
 
 }

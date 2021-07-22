@@ -10,4 +10,8 @@ interface UserRepository {
 
     fun loadToken()
 
+    fun getUsername() : String
+
+    fun signOut()
+
 }

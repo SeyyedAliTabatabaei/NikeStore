@@ -13,17 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NikeStore"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".feature.favorite.FavoriteProductsActivity"></activity>
         <activity android:name=".feature.checkout.CheckOutActivity">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="nike"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="nike" />
             </intent-filter>
         </activity>
-
-
         <activity android:name=".feature.shipping.ShippingActivity" />
         <activity
             android:name=".feature.auth.AuthActivity"

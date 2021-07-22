@@ -1,11 +1,8 @@
 package ir.at.nikestore.feature.list
 
-import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ir.at.nikestore.NikeActivity
@@ -21,7 +18,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class ProductListActivity : NikeActivity() , ProductListAdapter.ProductOnClickListener{
+class ProductListActivity : NikeActivity() , ProductListAdapter.ProductEventListener{
 
     val viewModel : ProductListViewModel by viewModel{ parametersOf(intent.extras!!.getInt(EXTRA_KEY_DATA))}
 
@@ -83,5 +80,9 @@ class ProductListActivity : NikeActivity() , ProductListAdapter.ProductOnClickLi
         startActivity(Intent(this , ProductDetailActivity::class.java).apply {
             putExtra(EXTRA_KEY_DATA , product)
         })
+    }
+
+    override fun onFavoriteBtnClick(product: Product) {
+        viewModel.addProductToFavorites(product)
     }
 }

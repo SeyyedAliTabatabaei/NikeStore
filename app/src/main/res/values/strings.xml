@@ -61,5 +61,11 @@
     <string name="signupScreenTitle">ایجاد حساب کاربری</string>
     <string name="loginHint">قبلا ثبت نام کردید؟</string>
 
+    <string name="favorites">لیست علاقه مندی ها</string>
+    <string name="signIn">ورود به حساب کاربری</string>
+    <string name="signOut">خروج از حساب کاربری</string>
+    <string name="guest_user">کاربر مهمان</string>
 
+    <string name="favorites_empty_state_message">هنوز محصولی به لیست علاقه مندی اضافه نکردی</string>
+    <string name="favorites_help_message">برای حذف محصول انگشت خود را روی آن نگه دارید</string>
 </resources>
