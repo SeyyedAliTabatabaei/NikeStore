@@ -1,6 +1,7 @@
 package ir.at.nikestore.data.repo.order
 
 import com.sevenlearn.nikestore.data.Checkout
+import com.sevenlearn.nikestore.data.OrderHistoryItem
 import com.sevenlearn.nikestore.data.SubmitOrderResult
 import io.reactivex.Single
 
@@ -16,5 +17,7 @@ interface OrderRepository {
     ): Single<SubmitOrderResult>
 
     fun checkout(orderId: Int): Single<Checkout>
+
+    fun list() : Single<List<OrderHistoryItem>>
 
 }

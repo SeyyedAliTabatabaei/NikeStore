@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.room.Room
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.sevenlearn.nikestore.feature.checkout.CheckoutViewModel
+import com.sevenlearn.nikestore.feature.order.OrderHistoryViewModel
 import com.sevenlearn.nikestore.feature.product.comment.CommentListViewModel
 import ir.at.nikestore.data.db.AppDatabase
 import ir.at.nikestore.data.repo.*
@@ -70,6 +71,7 @@ class App: Application() {
             viewModel { (orderId : Int) -> CheckoutViewModel(orderId , get()) }
             viewModel { ProfileViewModel(get()) }
             viewModel { FavoriteProductsViewModel(get()) }
+            viewModel { OrderHistoryViewModel(get()) }
 
         }
 

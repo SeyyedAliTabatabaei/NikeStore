@@ -1,6 +1,7 @@
 package ir.at.nikestore.data.repo.order
 
 import com.sevenlearn.nikestore.data.Checkout
+import com.sevenlearn.nikestore.data.OrderHistoryItem
 import com.sevenlearn.nikestore.data.SubmitOrderResult
 import io.reactivex.Single
 
@@ -27,4 +28,6 @@ class OrderRepositoryImpl(val orderDataSource: OrderDataSource) : OrderRepositor
     override fun checkout(orderId: Int): Single<Checkout> {
         return orderDataSource.checkout(orderId)
     }
+
+    override fun list(): Single<List<OrderHistoryItem>> = orderDataSource.list()
 }
