@@ -4,15 +4,21 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.os.Bundle
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.sevenlearn.nikestore.feature.checkout.CheckoutViewModel
 import com.sevenlearn.nikestore.feature.product.comment.CommentListViewModel
 import ir.at.nikestore.data.repo.*
+import ir.at.nikestore.data.repo.order.OrderRemoteDataSource
+import ir.at.nikestore.data.repo.order.OrderRepository
+import ir.at.nikestore.data.repo.order.OrderRepositoryImpl
 import ir.at.nikestore.data.repo.source.*
 import ir.at.nikestore.feature.auth.AuthViewModel
 import ir.at.nikestore.feature.cart.CartViewModel
 import ir.at.nikestore.feature.common.ProductListAdapter
 import ir.at.nikestore.feature.list.ProductListViewModel
 import ir.at.nikestore.feature.home.HomeViewModel
+import ir.at.nikestore.feature.main.MainViewModel
 import ir.at.nikestore.feature.product.ProductDetailViewModel
+import ir.at.nikestore.feature.shipping.ShippingViewModel
 import ir.at.nikestore.sevices.FrescoLoadingService
 import ir.at.nikestore.sevices.http.ImageLoadingService
 import ir.at.nikestore.sevices.http.creatApiServiceInstance
@@ -39,6 +45,7 @@ class App: Application() {
             single<SharedPreferences> { this@App.getSharedPreferences("app_settings" , MODE_PRIVATE) }
             single { UserLocalDataSource(get()) }
             single<UserRepository> { UserRepositoryImpl(UserLocalDataSource(get()) , UserRemoteDataSource(get())) }
+            single<OrderRepository> { OrderRepositoryImpl(OrderRemoteDataSource(get())) }
 
             factory { (viewType : Int ) -> ProductListAdapter(viewType , get()) }
             single<ImageLoadingService> { FrescoLoadingService() }
@@ -53,7 +60,9 @@ class App: Application() {
             viewModel { (sort : Int ) -> ProductListViewModel(sort , get()) }
             viewModel { AuthViewModel(get()) }
             viewModel { CartViewModel(get()) }
-
+            viewModel { MainViewModel(get()) }
+            viewModel { ShippingViewModel(get()) }
+            viewModel { (orderId : Int) -> CheckoutViewModel(orderId , get()) }
 
         }
 

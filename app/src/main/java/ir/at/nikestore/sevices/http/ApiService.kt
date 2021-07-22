@@ -1,10 +1,7 @@
 package ir.at.nikestore.sevices.http
 
 import com.google.gson.JsonObject
-import com.sevenlearn.nikestore.data.Banner
-import com.sevenlearn.nikestore.data.Comment
-import com.sevenlearn.nikestore.data.TokenContainer
-import com.sevenlearn.nikestore.data.TokenResponse
+import com.sevenlearn.nikestore.data.*
 import io.reactivex.Single
 import ir.at.nikestore.data.*
 import okhttp3.OkHttpClient
@@ -51,6 +48,12 @@ interface ApiService {
 
     @POST("auth/token")
     fun refreshToken(@Body jsonObject: JsonObject) : Call<TokenResponse>
+
+    @POST("order/submit")
+    fun submitOrder(@Body jsonObject: JsonObject) : Single<SubmitOrderResult>
+
+    @GET("order/checkout")
+    fun checkOut(@Query("order_id") orderId : Int) : Single<Checkout>
 }
 
 fun creatApiServiceInstance() : ApiService{

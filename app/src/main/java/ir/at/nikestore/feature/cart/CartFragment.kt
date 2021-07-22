@@ -15,9 +15,13 @@ import ir.at.nikestore.R
 import ir.at.nikestore.common.EXTRA_KEY_DATA
 import ir.at.nikestore.common.NikeCompletableObserver
 import ir.at.nikestore.data.CartItem
+import ir.at.nikestore.feature.auth.AuthActivity
 import ir.at.nikestore.feature.product.ProductDetailActivity
+import ir.at.nikestore.feature.shipping.ShippingActivity
 import ir.at.nikestore.sevices.http.ImageLoadingService
 import kotlinx.android.synthetic.main.fragment_cart.*
+import kotlinx.android.synthetic.main.view_cart_empty_state.*
+import kotlinx.android.synthetic.main.view_cart_empty_state.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,6 +59,29 @@ class CartFragment : NikeFragment() , CartItemAdapter.CartItemViewCallBacks {
                 adapter.purchaseDetail =it
                 adapter.notifyItemChanged(adapter.cartItems.size)
             }
+        }
+
+        viewModel.emptyStateLiveData.observe(viewLifecycleOwner){
+
+            if (it.mustShow){
+                val emptyState = showEmptyState(R.layout.view_cart_empty_state)
+                emptyState?.let {view ->
+                    view.emptyStateMessageTv.text = getString(it.messageResId)
+                    view.emptyStateCtaBtn.visibility = if (it.mustShowCallToActionButton) View.VISIBLE else View.GONE
+                    view.emptyStateCtaBtn.setOnClickListener {
+                        startActivity(Intent(requireContext() , AuthActivity::class.java))
+                    }
+                }
+            }
+            else
+                emptyStateRootView?.visibility = View.GONE
+        }
+
+
+        payBtn.setOnClickListener {
+            startActivity(Intent(requireContext() , ShippingActivity::class.java).apply {
+                putExtra(EXTRA_KEY_DATA , viewModel.purchaseDetailLiveData.value)
+            })
         }
     }
 
